@@ -11,53 +11,8 @@
 </head>
 <body>
 
-<div class="flex flex-col flex-no-wrap justify-center bg-white h-screen max-w-screen-xl mx-auto select-none leading-normal">
-    <div class="bg-gray-800 w-full h-10 pl-4 py-2 text-sm leading-relaxed flex flex-grow-0 items-start">
 
-        <!-- menu -->
-
-        <div class="relative z-50">
-            <a href="#" class="px-4 py-2 lh-2 text-gray-100 hover:bg-gray-700">File</a>
-            <div class="mt-px w-48 text-sm text-gray-200 leading-normal bg-gray-800 py-2 px-4 hidden">
-                <ul>
-                    <li class="my-2"><a href="#">New</a></li>
-                    <li class="my-2"><a href="#">Open</a></li>
-                    <li class="my-2"><a href="#">Save</a></li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="relative z-50">
-            <a href="#" class="px-4 py-2 lh-2 text-gray-100 hover:bg-gray-700">Edit</a>
-            <div class="mt-px w-48 text-sm text-gray-200 leading-normal bg-gray-800 py-2 px-4 hidden">
-                <ul>
-                    <li class="my-2"><a href="#">Resize</a></li>
-                    <li class="my-2"><a href="#">Free transform</a></li>
-                </ul>
-            </div>
-        </div>
-
-
-    </div>
-    <div class="bg-gray-700 shadow-inner w-full h-12">
-        <!-- toolbox -->
-    </div>
-    <div class="flex flex-1 relative w-full h-full z-0">
-        <!-- viewport -->
-        <div class="bg-gray-100 border-gray-200 border-r h-full w-32">
-            <!-- left sidebar: tools -->
-        </div>
-        <div class="editor--main flex-1 bg-gray-200">
-            <!-- canvas area -->
-            <div class="canvas-container inline-block relative bg-white border-gray-400 shadow">
-                <canvas width="450" height="450" class="canvas-element"></canvas>
-            </div>
-        </div>
-        <div class="bg-gray-100 border-gray-200 border-l h-full w-56">
-            <!-- right sidebar: properties -->
-        </div>
-    </div>
-</div>
+<div id="app"></div>
 
 <script src="src/app.js"></script>
 </body>

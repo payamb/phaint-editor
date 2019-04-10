@@ -20,7 +20,7 @@ export class MenuItem extends React.Component {
     });
   }
   closeMenu(event) {
-    if (event.clientY > 40) {
+    if (event.type === 'menu.action.close' || event.clientY > 40) {
       this.setState({
         active: false
       });

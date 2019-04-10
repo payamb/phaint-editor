@@ -7,7 +7,7 @@ export class Draggable {
     // this.element.addEventListener('dragover', this.log());
     // this.element.addEventListener('dragleave', this.log());
     // this.element.addEventListener('drop', this.log());
-    this.element.addEventListener('dragend', event => this.handleDragEnd(event));
+    // this.element.addEventListener('dragend', event => this.handleDragEnd(event));
   }
 
   handleDragEnd(event) {

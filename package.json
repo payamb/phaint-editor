@@ -21,7 +21,9 @@
     "tailwindcss": "^1.0.0-beta.4"
   },
   "dependencies": {
+    "parcel-plugin-inlinesvg": "^0.1.1",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react-dom": "^16.8.6",
+    "react-inlinesvg": "^0.8.4"
   }
 }

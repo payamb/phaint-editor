@@ -4,9 +4,13 @@ import {MenuItem} from "./menu-item";
 export class Menu extends React.Component {
     render() {
         return (
-            <div className="bg-gray-800 w-full h-10 pl-4 py-2 text-sm leading-relaxed flex flex-grow-0 items-start">
+            <div className="border-t-4 border-gray-500 bg-gray-800 w-full pl-2 py-1 text-sm-small
+              text-gray-300 leading-relaxed flex flex-grow-0 items-start">
                 <MenuItem name="File"/>
                 <MenuItem name="Edit"/>
+                <MenuItem name="Image"/>
+                <MenuItem name="Filter"/>
+                <MenuItem name="Help"/>
             </div>
         );
     }

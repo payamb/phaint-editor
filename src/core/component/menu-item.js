@@ -27,22 +27,25 @@ export class MenuItem extends React.Component {
     }
   }
   componentDidMount() {
-    window.addEventListener('menu.action.close', (e) => this.closeMenu(e))
-    window.addEventListener('click', (e) => this.closeMenu(e))
+    window.addEventListener('menu.action.close', (e) => this.closeMenu(e));
+    window.addEventListener('click', (e) => this.closeMenu(e));
   }
   componentWillUnmount() {
     window.removeEventListener('resize', (e) => this.closeMenu(e));
   }
   render() {
-    const toggleClass = this.state.active ? '' : 'hidden';
+    const subMenuActiveClass = this.state.active ? '' : 'hidden';
+    const menuActiveClass = this.state.active ? 'bg-gray-900' : '';
     return (
-        <div className="relative z-50">
-            <a onClick={(e) => this.toggleState(e)} className="px-4 py-2 lh-2 text-gray-100 hover:bg-gray-700">{this.props.name}</a>
-            <div className={`mt-px w-48 text-sm text-gray-200 absolute leading-normal bg-gray-800 py-2 px-4 ${toggleClass}`}>
+        <div className="relative z-50 my-1">
+            <a onClick={(e) => this.toggleState(e)} className={`px-4 py-2 leading-none hover:bg-gray-700 ${menuActiveClass}`}>
+              {this.props.name}
+            </a>
+            <div className={`mt-2 w-48 shadow-lg text-gray-200 absolute leading-normal bg-gray-900 py-1 px-1 font-light ${subMenuActiveClass}`}>
                 <ul>
-                    <li className="my-2"><a href="#">New</a></li>
-                    <li className="my-2"><a href="#">Open</a></li>
-                    <li className="my-2"><a href="#">Save</a></li>
+                    <li className="my-2"><a className="hover:bg-gray-700 block px-2 py-1" href="#">New</a></li>
+                    <li className="my-2"><a className="hover:bg-gray-700 block px-2 py-1" href="#">Open</a></li>
+                    <li className="my-2"><a className="hover:bg-gray-700 block px-2 py-1" href="#">Save</a></li>
                 </ul>
             </div>
         </div>

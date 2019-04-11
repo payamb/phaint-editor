@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@import "component/input-range";
+
+
+.text-sm-small {
+  font-size: .812rem;
+}
+.text-sm-mid {
+  font-size: .937rem;
+}
 
 .editor--main {
   display: -moz-box;
@@ -10,4 +19,32 @@
   -webkit-box-align: center;
   -moz-box-pack: center;
   -webkit-box-pack: center;
+}
+
+.toolbar {
+  &__item {
+    & > :first-child {
+      height: 40px;
+      min-height: 40px;
+      margin-bottom: 5px;
+    }
+    svg {
+      width: 18px;
+      height: 18px;
+      margin: 0 auto;
+      fill: #e6e6e6;
+    }
+  }
+}
+
+.toolbox {
+  &__item {
+    svg {
+      width: 20px;
+      height: 20px;
+      margin: 0 auto;
+      fill: #e6e6e6;
+    }
+  }
+
 }

@@ -41,12 +41,14 @@ import ReactDOM from "react-dom";
 import {Menu} from "./core/component/menu";
 import {ToolBar} from "./core/component/toolbar";
 import {EditorArea} from "./core/component/editor-container";
+import {Dialogue} from "./core/component/dialogue";
 
 ReactDOM.render(
     <div className="
     flex flex-col flex-no-wrap justify-center bg-white h-screen
      max-w-screen-xl mx-auto select-none leading-normal
      ">
+        <Dialogue/>
         <Menu/>
         <ToolBar/>
         <EditorArea/>

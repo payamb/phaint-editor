@@ -5,7 +5,7 @@ import {SelectTool} from "./toolbox/select-tool";
 export class ToolBox extends React.Component {
     render() {
         return (
-            <div className="toolbox bg-gray-700 shadow-inner h-full w-16">
+            <div className="toolbox bg-gray-700 shadow-inner h-full w-12">
                 <MoveTool />
                 <SelectTool />
             </div>

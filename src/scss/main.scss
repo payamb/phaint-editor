@@ -39,6 +39,7 @@
 
 .toolbox {
   &__item {
+    padding: 15px 0;
     svg {
       width: 20px;
       height: 20px;
@@ -46,5 +47,4 @@
       fill: #e6e6e6;
     }
   }
-
 }

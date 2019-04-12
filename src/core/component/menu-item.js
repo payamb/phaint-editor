@@ -36,6 +36,7 @@ export class MenuItem extends React.Component {
   render() {
     const subMenuActiveClass = this.state.active ? '' : 'hidden';
     const menuActiveClass = this.state.active ? 'bg-gray-900' : '';
+
     return (
         <div className="relative z-50 my-1">
             <a onClick={(e) => this.toggleState(e)} className={`px-4 py-2 leading-none hover:bg-gray-700 ${menuActiveClass}`}>
@@ -43,9 +44,7 @@ export class MenuItem extends React.Component {
             </a>
             <div className={`mt-2 w-48 shadow-lg text-gray-200 absolute leading-normal bg-gray-900 py-1 px-1 font-light ${subMenuActiveClass}`}>
                 <ul>
-                    <li className="my-2"><a className="hover:bg-gray-700 block px-2 py-1" href="#">New</a></li>
-                    <li className="my-2"><a className="hover:bg-gray-700 block px-2 py-1" href="#">Open</a></li>
-                    <li className="my-2"><a className="hover:bg-gray-700 block px-2 py-1" href="#">Save</a></li>
+                  {this.props.children}
                 </ul>
             </div>
         </div>

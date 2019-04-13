@@ -1,16 +1,3 @@
-// const canvasContainer = document.querySelector('.canvas-container');
-//
-// const canvas = document.querySelector('.canvas-element');
-// const context = canvas.getContext('2d');
-//
-// const image = new Image();
-// image.src = 'https://ichef.bbci.co.uk/news/660/cpsprodpb/CCAB/production/_106359325_trainticket.gif';
-// image.onload = () => {
-//   console.log(image.naturalWidth);
-//   canvas.width = image.naturalWidth;
-//   canvas.height = image.naturalHeight;
-//   context.drawImage(image, 0, 0);
-// };
 //
 // function addSelector() {
 //   const selector = document.createElement('div');
@@ -33,7 +20,7 @@
 // });
 
 
-import { subscribe } from "./event-bus";
+import {subscribe, publish} from "./event-bus";
 
 export class Canvas {
   static instance;
@@ -47,16 +34,45 @@ export class Canvas {
     this.canvas = canvasElement;
     this.context = this.canvas .getContext('2d');
 
+    this.state = {
+      width: 0,
+      height: 0,
+      scale: 1,
+      image: null,
+    };
+
+    this.state = new Proxy(this.state, {
+      set(target, property, value) {
+        publish('canvas.state.updated', {[property]: value});
+        return Reflect.set(target, property, value);
+      },
+    });
+
+    this.registerListeners();
+  }
+
+  registerListeners() {
     subscribe('canvas.init.image', (image) => this.initCanvasWithImage(image));
+    subscribe('canvas.meta.zoom', (scaleFactor) => this.setZoom(scaleFactor));
   }
   setSize(width, height) {
 
+  }
+
+  setZoom(scaleFactor) {
+    this.context.scale(scaleFactor, scaleFactor);
   }
   initCanvasWithImage(image) {
     image.onload = () => {
       this.canvas.width = image.naturalWidth;
       this.canvas.height = image.naturalHeight;
       this.context.drawImage(image, 0, 0);
+
+      Object.assign(this.state, {
+        image: image,
+        width: image.naturalWidth,
+        height: image.naturalHeight,
+      });
     };
   }
 }

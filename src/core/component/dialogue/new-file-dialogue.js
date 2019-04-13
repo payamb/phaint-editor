@@ -25,7 +25,7 @@ export class FileNewDialogue extends React.Component {
     event.preventDefault();
 
     publish('canvas.new.init', this.state);
-    this.closeDialogue();
+    publish('dialogue.close', {});
   }
   render() {
     return (

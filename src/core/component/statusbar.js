@@ -1,5 +1,5 @@
 import React from "react";
-import {subscribe} from "../../event-bus";
+import {subscribe} from "../event-bus";
 
 export class StatusBar extends React.Component {
   constructor(props) {

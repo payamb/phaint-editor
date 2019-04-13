@@ -10,15 +10,7 @@ export class Editor extends React.Component {
       height: 0,
     };
   }
-  initCanvas(data) {
-    this.setState({
-      width: data.width,
-      height: data.height,
-    });
-  }
   componentDidMount() {
-    subscribe('canvas.new.init', (data) => this.initCanvas(data));
-
     window.canvas = new Canvas(
       document.querySelector('.canvas-element')
     );
@@ -26,8 +18,8 @@ export class Editor extends React.Component {
   render() {
       return (
         <div className="editor--main w-full flex-1 bg-gray-800">
-              <div className="canvas-container inline-block relative bg-white border-gray-400">
-                <canvas width={this.state.width} height={this.state.height} className="canvas-element"></canvas>
+          <div className="canvas-container inline-block relative border-gray-400">
+            <canvas width="0" height="0" className="canvas-element"></canvas>
               </div>
           </div>
       );

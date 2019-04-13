@@ -3,14 +3,32 @@ import {Dialogue} from "./core/component/dialogue";
 import {Menu} from "./core/component/menu";
 import {ToolBar} from "./core/component/toolbar";
 import {EditorArea} from "./core/component/editor-container";
+import {publish} from "./core/event-bus";
 
 export class App extends React.Component {
   componentDidMount() {
-    // window.addEventListener('keydown', (e) => this.handleKeyPress(e));
+    window.addEventListener('keydown', (e) => this.handleKeyPress(e));
   }
   handleKeyPress(event) {
     if(event.isComposing && event.ctrlKey){
       e.preventDefault();
+    }
+
+    switch (event.code) {
+      case 'KeyF':
+        fetch('https://ichef.bbci.co.uk/news/660/cpsprodpb/1665F/production/_106434719_d049f5e1-32a1-404d-9a3e-23ad83e2b729.jpg')
+          .then((response) => response.blob())
+          .then((blogResponse) => {
+            const image = new Image();
+            image.src = URL.createObjectURL(blogResponse);
+
+            publish('canvas.init.image', image);
+          })
+          .catch((err) => console.log(err));
+        break;
+      case 'KeyD':
+        publish('canvas.export', this.state);
+        break;
     }
   }
   render() {

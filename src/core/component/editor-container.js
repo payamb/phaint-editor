@@ -2,7 +2,7 @@ import React from "react";
 import {ToolBox} from "./toolbox";
 import {Editor} from "./editor";
 import {Properties} from "./properties";
-import {StatusBar} from "./toolbox/statusbar";
+import {StatusBar} from "./statusbar";
 
 export class EditorArea extends React.Component {
     render() {

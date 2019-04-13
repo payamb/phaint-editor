@@ -8,7 +8,7 @@ export class FileOpenUrlDialogue extends React.Component {
       url: '',
     };
 
-    navigator.clipboard.readText().then(text => this.state.url += text);
+    navigator.clipboard.readText().then(text => this.state.url = text);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }

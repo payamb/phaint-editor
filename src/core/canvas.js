@@ -1,8 +1,4 @@
-import './scss/main.scss';
-// import { Draggable } from "./core/draggable";
-//
 // const canvasContainer = document.querySelector('.canvas-container');
-// const draggableContainer = new Draggable(canvasContainer);
 //
 // const canvas = document.querySelector('.canvas-element');
 // const context = canvas.getContext('2d');
@@ -36,21 +32,31 @@ import './scss/main.scss';
 //   selector.style.display = 'block';
 // });
 
-import React from "react";
-import ReactDOM from "react-dom";
-import {Menu} from "./core/component/menu";
-import {ToolBar} from "./core/component/toolbar";
-import {EditorArea} from "./core/component/editor-container";
-import {Dialogue} from "./core/component/dialogue";
 
-ReactDOM.render(
-    <div className="
-    flex flex-col flex-no-wrap justify-center bg-white h-screen
-     max-w-screen-xl mx-auto select-none leading-normal
-     ">
-        <Dialogue/>
-        <Menu/>
-        <ToolBar/>
-        <EditorArea/>
-    </div>
-    , document.getElementById("app"));
+import { subscribe } from "./event-bus";
+
+export class Canvas {
+  static instance;
+
+  constructor(canvasElement){
+    if(this.instance){
+      return this.instance;
+    }
+
+    this.instance = this;
+    this.canvas = canvasElement;
+    this.context = this.canvas .getContext('2d');
+
+    subscribe('canvas.init.image', (image) => this.initCanvasWithImage(image));
+  }
+  setSize(width, height) {
+
+  }
+  initCanvasWithImage(image) {
+    image.onload = () => {
+      this.canvas.width = image.naturalWidth;
+      this.canvas.height = image.naturalHeight;
+      this.context.drawImage(image, 0, 0);
+    };
+  }
+}

@@ -1,43 +1,45 @@
-class EventBus {
-  constructor() {
-    this.queue = {};
+/**
+ * subscriptions data format:
+ * { eventType: { id: callback } }
+ */
+const subscriptions = { };
+const getNextUniqueId = getIdGenerator();
+
+function subscribe(eventType, callback) {
+  const id = getNextUniqueId();
+
+  if (!subscriptions[eventType]) {
+    subscriptions[eventType] = {
+    };
   }
 
-  publish(event, data) {
-    let queue = this.queue[event];
+  subscriptions[eventType][id] = callback;
 
-    if (typeof queue === 'undefined') {
-      return false;
-    }
-
-    while (queue.length > 0) {
-      (queue.shift())(data);
-    }
-
-    return true;
-  }
-
-  subscribe(event, callback) {
-    if (typeof this.queue[event] === 'undefined') {
-      this.queue[event] = [];
-    }
-
-    this.queue[event].push(callback);
-  }
-
-  //  the callback parameter is optional. Without it the whole event will be removed, instead of
-  // just one subscibtion. Enough for simple implementations
-  unsubscribe(event, callback) {
-    let queue = this.queue;
-
-    if (typeof queue[event] !== 'undefined') {
-      if (typeof callback === 'undefined') {
-        delete queue[event];
-      } else {
-        this.queue[event] = queue[event].filter(() => { return sub !== callback; });
+  return {
+    unsubscribe: () => {
+      delete subscriptions[eventType][id];
+      if (Object.keys(subscriptions[eventType]).length === 0) {
+        delete subscriptions[eventType];
       }
-    }
-  }
+    },
+  };
 }
 
-module.exports = new EventBus();
+function publish(eventType, arg) {
+  if (!subscriptions[eventType]) {
+    return;
+  }
+
+  Object.keys(subscriptions[eventType]).forEach(key => subscriptions[eventType][key](arg));
+}
+
+function getIdGenerator() {
+  let lastId = 0;
+
+  return function getNextUniqueId() {
+    lastId += 1;
+    return lastId;
+  };
+}
+
+export { publish, subscribe };

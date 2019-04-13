@@ -1,34 +1,33 @@
 export class Draggable {
-  constructor(element) {
-    this.element = element;
-
+  constructor(elementHandle, elementBody) {
+    this.elementHandle = elementHandle;
+    this.elementBody = elementBody;
     this.position = {
-      positionX: 0,
-      positionY: 0,
+      x: 0,
+      y: 0,
     };
 
     window.addEventListener('mouseup', () => this.handleMouseUp(), false);
-    this.element.addEventListener('mousedown', e => this.handleMouseDown(e), false);
+    this.elementHandle.addEventListener('mousedown', e => this.handleMouseDown(e), false);
+    this.mouseMoveEventHandler = e => this.handleMouseMove(e);
   }
 
   handleMouseMove(event) {
-    console.log('yo mousemove');
-    const x = event.clientX - this.position.positionX;
-    const y = event.clientY - this.position.positionY;
+    const x = event.clientX - this.position.x;
+    const y = event.clientY - this.position.y - 40;
 
-    this.element.style.left = `${x}px`;
-    this.element.style.top = `${y}px`;
+    this.elementBody.style.left = `${x}px`;
+    this.elementBody.style.top = `${y}px`;
   }
 
   handleMouseDown(event) {
-    console.log('yo mousedown');
-    this.position.positionX = event.clientX - this.element.offsetLeft;
-    this.position.positionY = event.clientY - this.element.offsetTop;
+    this.position.x = event.clientX - this.elementBody.offsetLeft;
+    this.position.y = event.clientY - this.elementBody.offsetTop;
 
-    window.addEventListener('mousemove', e => this.handleMouseMove(e), true);
+    window.addEventListener('mousemove', this.mouseMoveEventHandler, true);
   }
 
   handleMouseUp() {
-    window.removeEventListener('mousemove', e => this.handleMouseMove(e), true);
+    window.removeEventListener('mousemove', this.mouseMoveEventHandler, true);
   }
 }

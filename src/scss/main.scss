@@ -12,6 +12,12 @@
   font-size: .937rem;
 }
 
+.button {
+  &--success {
+    background: #104992;
+  }
+}
+
 .editor--main {
   display: -moz-box;
   display: -webkit-box;

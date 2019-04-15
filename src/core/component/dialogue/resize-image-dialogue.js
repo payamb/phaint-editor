@@ -1,12 +1,13 @@
 import React from "react";
 import { publish } from "../../event-bus";
 
-export class FileNewDialogue extends React.Component {
+export class ResizeImageDialogue extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      width: 768,
-      height: 420,
+      width: window.canvas.state.width,
+      height: window.canvas.state.height,
+      aspectRatio: window.canvas.state.width / window.canvas.state.height
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -24,7 +25,7 @@ export class FileNewDialogue extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
 
-    publish('canvas.new.init', this.state);
+    publish('canvas.edit.resize', this.state);
     publish('dialogue.close', {});
   }
   render() {
@@ -75,10 +76,10 @@ export class FileNewDialogue extends React.Component {
           </div>
         </div>
 
-        <div className="flex items-center justify-end text-sm-small mt-8">
+        <div className="flex items-center justify-end text-sm-small">
           <div className="">
             <button className="button--success hover:bg-blue-800 h-8 align-middle block text-white px-4 rounded mx-2 shadow-inner">
-              Confirm
+              Resize
             </button>
           </div>
           <div className="">

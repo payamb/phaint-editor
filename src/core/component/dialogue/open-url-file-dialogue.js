@@ -1,5 +1,6 @@
 import React from "react";
 import { publish } from "../../event-bus";
+import request from "../../request";
 
 export class FileOpenUrlDialogue extends React.Component {
   constructor(props) {
@@ -24,14 +25,19 @@ export class FileOpenUrlDialogue extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
 
-    fetch(this.state.url)
-      .then((response) => response.blob())
-      .then((blogResponse) => this.loadImage(blogResponse))
-      .catch((err) => console.log(err));
+    request({
+        url: 'https://cors-anywhere.herokuapp.com/' + this.state.url,
+        responseType: 'arraybuffer',
+        onProgress: (event) => publish('file.load.progress', event)
+      })
+      .then(response => this.loadImage(response))
+      .catch(err => console.log(err));
   }
-  loadImage(blogResponse) {
+  loadImage(response) {
     const image = new Image();
-    image.src = URL.createObjectURL(blogResponse);
+    const blob = new Blob([new Uint8Array(response)]);
+
+    image.src = URL.createObjectURL(blob);
 
     publish('canvas.init.image', image);
     publish('dialogue.close', {});

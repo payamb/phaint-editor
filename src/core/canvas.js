@@ -8,6 +8,7 @@
 
 
 import {subscribe, publish} from "./event-bus";
+import ResizeBicubic from "./worker/resize-bicubic";
 
 export class Canvas {
   static instance;
@@ -44,6 +45,8 @@ export class Canvas {
     subscribe('canvas.new.init', (data) => this.initBlankCanvas(data));
     subscribe('canvas.init.image', (image) => this.initCanvasWithImage(image));
 
+    subscribe('canvas.edit.resize', (data) => this.resize(data));
+
     subscribe('canvas.meta.zoom', (scaleFactor) => this.setZoom(scaleFactor));
     subscribe('canvas.export', (data) => this.export(data));
   }
@@ -76,19 +79,28 @@ export class Canvas {
       });
     };
   }
+  resize(data) {
+      const imageData = this.context.getImageData(0, 0, this.state.width, this.state.height);
 
+      const resize = new ResizeBicubic(imageData, data.width, data.height);
+      const resizedPixelData = resize.resize();
+
+      this.canvas.width = data.width;
+      this.canvas.height = data.height;
+
+      console.log(resizedPixelData);
+      this.context.putImageData(resizedPixelData, 0, 0);
+
+  }
   export(data) {
     window.location.href = this.canvas.toDataURL('image/jpeg', 1.0).replace('image/jpeg', "image/octet-stream");
   }
-
   setSize(width, height) {
 
   }
-
   setZoom(scaleFactor) {
     this.context.scale(scaleFactor, scaleFactor);
   }
-
   selectionTool() {
     const addSelector = () => {
       const selector = document.createElement('div');

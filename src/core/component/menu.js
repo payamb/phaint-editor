@@ -4,6 +4,7 @@ import {MenuFileNew} from "./menu/menu-file-new";
 import {MenuFileOpen} from "./menu/menu-file-open";
 import {MenuFileOpenUrl} from "./menu/menu-file-open-url";
 import {MenuFileExport} from "./menu/menu-file-exportl";
+import {MenuImageResize} from "./menu/menu-image-resize";
 
 export class Menu extends React.Component {
     render() {
@@ -18,7 +19,9 @@ export class Menu extends React.Component {
                   <MenuFileExport/>
                 </MenuItem>
                 <MenuItem name="Edit"/>
-                <MenuItem name="Image"/>
+                <MenuItem name="Image">
+                  <MenuImageResize />
+                </MenuItem>
                 <MenuItem name="Filter"/>
                 <MenuItem name="Help"/>
             </div>

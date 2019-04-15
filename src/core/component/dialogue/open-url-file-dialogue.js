@@ -34,12 +34,7 @@ export class FileOpenUrlDialogue extends React.Component {
       .catch(err => console.log(err));
   }
   loadImage(response) {
-    const image = new Image();
-    const blob = new Blob([new Uint8Array(response)]);
-
-    image.src = URL.createObjectURL(blob);
-
-    publish('canvas.init.image', image);
+    publish('canvas.init.image', response);
     publish('dialogue.close', {});
   }
   render() {

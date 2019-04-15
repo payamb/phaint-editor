@@ -1,26 +1,16 @@
-//
-
-//
-// canvasContainer.addEventListener('mousedown', (e) => {
-//   const selector = addSelector();
-//   selector.style.display = 'block';
-// });
-
-
 import {subscribe, publish} from "./event-bus";
 import ResizeBicubic from "./worker/resize-bicubic";
 
 export class Canvas {
   static instance;
 
-  constructor(canvasElement){
+  constructor(canvasElement) {
     if(this.instance){
       return this.instance;
     }
 
     this.instance = this;
     this.canvas = canvasElement;
-    this.context = this.canvas .getContext('2d');
 
     this.state = {
       initialized: false,
@@ -37,10 +27,23 @@ export class Canvas {
       },
     });
 
+    this.bindWorker();
     this.registerListeners();
     this.selectionTool();
   }
 
+  bindWorker() {
+    this.canvasWorker = new Worker('worker/canvas-worker.js');
+    this.canvasWorker.addEventListener('message', ev => this.serviceWorkerHandler(ev));
+
+    let offscreen = this.canvas.transferControlToOffscreen();
+    this.canvasWorker.postMessage({
+      type: 'init',
+      params: {
+        canvas: offscreen
+      }
+    }, [offscreen]);
+  }
   registerListeners() {
     subscribe('canvas.new.init', (data) => this.initBlankCanvas(data));
     subscribe('canvas.init.image', (image) => this.initCanvasWithImage(image));
@@ -51,55 +54,47 @@ export class Canvas {
     subscribe('canvas.export', (data) => this.export(data));
   }
 
+  serviceWorkerHandler(event) {
+    if (event.data.type === 'setState') {
+      Object.assign(this.state, event.data.params);
+    }
+    if (event.data.type === 'render') {
+      this.context.transferFromImageBitmap(event.data.params.bitmap);
+    }
+  }
   initBlankCanvas(data) {
-    this.canvas.width = data.width;
-    this.canvas.height = data.height;
-
-    this.context.fillStyle = '#fff';
-    this.context.fillRect(0, 0, data.width, data.height);
-
-    Object.assign(this.state, {
-      initialized: true,
-      image: null,
-      width: data.width,
-      height: data.height,
+    this.canvasWorker.postMessage({
+      type: 'initBlankCanvas',
+      params: {
+        width: data.width,
+        height: data.height,
+      }
     });
   }
   initCanvasWithImage(image) {
-    image.onload = () => {
-      this.canvas.width = image.naturalWidth;
-      this.canvas.height = image.naturalHeight;
-      this.context.drawImage(image, 0, 0);
-
-      Object.assign(this.state, {
-        initialized: true,
+    this.canvasWorker.postMessage({
+      type: 'loadImage',
+      params: {
         image: image,
-        width: image.naturalWidth,
-        height: image.naturalHeight,
-      });
-    };
+      }
+    });
   }
   resize(data) {
-      const imageData = this.context.getImageData(0, 0, this.state.width, this.state.height);
-
-      const resize = new ResizeBicubic(imageData, data.width, data.height);
-      const resizedPixelData = resize.resize();
-
-      this.canvas.width = data.width;
-      this.canvas.height = data.height;
-
-      console.log(resizedPixelData);
-      this.context.putImageData(resizedPixelData, 0, 0);
-
+    this.canvasWorker.postMessage({
+      type: 'resize',
+      params: {
+        algo: 'bicubic',
+        width: data.width,
+        height: data.height,
+      }
+    });
   }
   export(data) {
-    window.location.href = this.canvas.toDataURL('image/jpeg', 1.0).replace('image/jpeg', "image/octet-stream");
-  }
-  setSize(width, height) {
-
+    window.location.href = this.canvas.toDataURL('image/jpeg', 1.0)
+      .replace('image/jpeg', "image/octet-stream");
   }
   setZoom(scaleFactor) {
-    this.context.scale(scaleFactor, scaleFactor);
+    // this.context.scale(scaleFactor, scaleFactor);
   }
   selectionTool() {
     const addSelector = () => {
